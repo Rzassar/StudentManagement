@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StudentManagement.Domain", "StudentManagement.Domain", "{2F4D5CC5-949E-4CC4-8487-24A7F3112906}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StudentManagement.Application", "StudentManagement.Application", "{B431396A-8745-4C2C-8379-9CBA60314339}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StudentManagement.Infrastructure", "StudentManagement.Infrastructure", "{9A3D9E8E-75D8-4400-92B9-4615831FB8A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StudentManagement.API", "StudentManagement.API", "{6F208A74-972F-4A20-9420-98254567CF2F}"
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {06F889A8-E7AD-4C74-A340-111DBD8CC2C5}
+	EndGlobalSection
+EndGlobal
