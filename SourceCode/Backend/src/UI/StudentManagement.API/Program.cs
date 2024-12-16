@@ -1,5 +1,4 @@
-
-namespace StudentManagement.API
+namespace StudentManagement.UI.API
 {
     public class Program
     {
