@@ -1,3 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using StudentManagement.Core.Application;
+using StudentManagement.Core.Application.Contracts.IRepository;
+using StudentManagement.Infrastructure;
+using StudentManagement.Infrastructure.Repository;
+
 namespace StudentManagement.UI.API
 {
     public class Program
@@ -6,16 +12,23 @@ namespace StudentManagement.UI.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
+            //NOTE: Add services to the container.
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            builder.Services.AddApplicationServices();
+            builder.Services.AddInfrastructureServices
+            (
+                builder.Configuration.GetConnectionString("DefaultConnection")
+            );
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            //NOTE: Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -23,9 +36,6 @@ namespace StudentManagement.UI.API
             }
 
             app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
 
             app.MapControllers();
 

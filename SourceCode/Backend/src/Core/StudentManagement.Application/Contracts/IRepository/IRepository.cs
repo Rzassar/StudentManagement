@@ -8,9 +8,9 @@ namespace StudentManagement.Core.Application.Contracts.IRepository
 
         Task<IEnumerable<TEntity>> GetAllAsync();
         
-        Task<TEntity> AddAsync(TEntity entity);
+        void Add(TEntity entity);
         
-        Task UpdateAsync(TEntity entity);
+        void Update(TEntity entity);
         
         Task DeleteAsync(int id);
     }
