@@ -6,9 +6,8 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  backend:
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v3
     
@@ -25,3 +24,21 @@ jobs:
     
     - name: Test
       run: dotnet test ./SourceCode/Backend/StudentManagement.sln --no-build --configuration Release
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x'
+        
+    - name: Install Dependencies
+      working-directory: ./SourceCode/Frontend/student-management
+      run: npm install
+      
+    - name: Build
+      working-directory: ./SourceCode/Frontend/student-management
+      run: npm run build
