@@ -28,6 +28,8 @@ namespace StudentManagement.UI.API
 
             var app = builder.Build();
 
+            app.UseCustomExceptionHandler();
+
             //NOTE: Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
