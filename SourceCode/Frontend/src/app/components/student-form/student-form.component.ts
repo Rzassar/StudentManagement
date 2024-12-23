@@ -5,7 +5,7 @@ import { StudentService } from '../../services/student.service';
 import { CommonModule } from '@angular/common';
 import { FluentValidationError } from '../../models/FluentValidationError';
 
-@Component({
+@Component({ 
   selector: 'app-student-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
@@ -69,7 +69,7 @@ export class StudentFormComponent implements OnInit {
       [key: string]: AbstractControl;
     }; 
   }
-  
+
   onSubmit(): void {
     this.submitted = true;
     this.errorMessage = '';
