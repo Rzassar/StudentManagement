@@ -1,0 +1,63 @@
+<div class="container mt-4">
+    <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+        {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label class="form-label">First Name</label>
+          <input type="text" 
+                 class="form-control" 
+                 [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }"
+                 formControlName="firstName">
+          <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
+            <div *ngIf="f['firstName'].errors['required']">First name is required</div>
+            <div *ngIf="f['firstName'].errors['minlength']">First name must be at least 2 characters</div>
+            <div *ngIf="f['firstName'].errors['maxlength']">First name cannot exceed 50 characters</div>
+          </div>
+        </div>
+      
+        <div class="mb-3">
+          <label class="form-label">Last Name</label>
+          <input type="text" 
+                 class="form-control" 
+                 [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }"
+                 formControlName="lastName">
+          <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
+            <div *ngIf="f['lastName'].errors['required']">Last name is required</div>
+            <div *ngIf="f['lastName'].errors['minlength']">Last name must be at least 2 characters</div>
+            <div *ngIf="f['lastName'].errors['maxlength']">Last name cannot exceed 50 characters</div>
+          </div>
+        </div>
+      
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" 
+                 class="form-control" 
+                 [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+                 formControlName="email">
+          <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+            <div *ngIf="f['email'].errors['required']">Email is required</div>
+            <div *ngIf="f['email'].errors['email']">Please enter a valid email address</div>
+            <div *ngIf="f['email'].errors['maxlength']">Email cannot exceed 100 characters</div>
+          </div>
+        </div>
+      
+        <div class="mb-3">
+          <label class="form-label">Date of Birth</label>
+          <input type="date" 
+                 class="form-control" 
+                 [ngClass]="{ 'is-invalid': submitted && f['dateOfBirth'].errors }"
+                 formControlName="dateOfBirth">
+          <div *ngIf="submitted && f['dateOfBirth'].errors" class="invalid-feedback">
+            <div *ngIf="f['dateOfBirth'].errors['required']">Date of birth is required</div>
+            <div *ngIf="f['dateOfBirth'].errors['futureDate']">Date of birth cannot be in the future</div>
+          </div>
+        </div>
+      
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-secondary me-2" (click)="onCancel()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+  </div>
