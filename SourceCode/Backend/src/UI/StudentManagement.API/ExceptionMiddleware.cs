@@ -1,6 +1,5 @@
 ﻿namespace StudentManagement.UI.API
 {
-    // StudentManagement.API/Middleware/ExceptionMiddleware.cs
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate next;
@@ -20,23 +19,31 @@
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "An unexpected error occurred.");
+                logger.LogError(ex, "An unhandled exception occurred: {Message}", ex.Message);
+
+                //NOTE: Log inner exception if any
+                if (ex.InnerException != null)
+                {
+                    logger.LogError(ex.InnerException, "Inner Exception: {Message}", ex.InnerException.Message);
+                }
+
                 await HandleExceptionAsync(context, ex);
             }
         }
 
-        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
             var response = new
             {
-                StatusCode = StatusCodes.Status500InternalServerError,
+                StatusCode = context.Response.StatusCode,
                 Message = "Internal Server Error",
-                DetailedMessage = exception.Message
+                DetailedMessage = exception.Message,
+                StackTrace = exception.StackTrace //TODO: Consider removing in production
             };
 
-            context.Response.StatusCode = response.StatusCode;
             await context.Response.WriteAsJsonAsync(response);
         }
     }
