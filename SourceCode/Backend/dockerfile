@@ -1,0 +1,22 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY ["src/UI/StudentManagement.API/StudentManagement.UI.API.csproj", "UI/StudentManagement.API/"]
+COPY ["src/Core/StudentManagement.Domain/StudentManagement.Core.Domain.csproj", "Core/StudentManagement.Domain/"]
+COPY ["src/Core/StudentManagement.Application/StudentManagement.Core.Application.csproj", "Core/StudentManagement.Application/"]
+COPY ["src/Infrastructure/StudentManagement.Infrastructure/StudentManagement.Infrastructure.csproj", "Infrastructure/StudentManagement.Infrastructure/"]
+RUN dotnet restore "UI/StudentManagement.API/StudentManagement.UI.API.csproj"
+COPY /src .
+WORKDIR "/src/UI/StudentManagement.API"
+RUN dotnet build "StudentManagement.UI.API.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "StudentManagement.UI.API.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "StudentManagement.UI.API.dll"]

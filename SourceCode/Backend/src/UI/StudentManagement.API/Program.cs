@@ -15,6 +15,19 @@ namespace StudentManagement.UI.API
             //NOTE: Add services to the container.
             builder.Services.AddControllers();
 
+            //NOTE: Add CORS policy
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend", builder =>
+                {
+                    var allowedOrigins = Environment.GetEnvironmentVariable("ALLOWED_ORIGINS")?.Split(',')
+                                        ?? ["http://localhost:4200"];
+                    builder.WithOrigins(allowedOrigins)
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
+
             builder.Services.AddApplicationServices();
             builder.Services.AddInfrastructureServices
             (
@@ -30,6 +43,13 @@ namespace StudentManagement.UI.API
 
             app.UseCustomExceptionHandler();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<ApplicationDbContext>();
+                context.Database.Migrate();
+            }
+
             //NOTE: Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -38,6 +58,8 @@ namespace StudentManagement.UI.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowFrontend");
 
             app.MapControllers();
 
