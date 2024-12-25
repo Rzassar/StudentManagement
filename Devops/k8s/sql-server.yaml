@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: mssql-data
 spec:
+  storageClassName: hostpath
   accessModes:
     - ReadWriteOnce
   resources:
