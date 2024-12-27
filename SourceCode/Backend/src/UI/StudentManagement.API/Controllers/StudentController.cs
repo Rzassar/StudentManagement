@@ -12,14 +12,16 @@ namespace StudentManagement.UI.API.Controllers
         #region Fields & Properties
 
         private readonly IUnitOfWork unitOfWork;
+        private readonly ILogger<StudentController> logger;
 
         #endregion
 
         #region Constructors
 
-        public StudentController(IUnitOfWork unitOfWork)
+        public StudentController(IUnitOfWork unitOfWork, ILogger<StudentController> logger)
         {
             this.unitOfWork = unitOfWork;
+            this.logger = logger;
         }
 
         #endregion
@@ -49,7 +51,12 @@ namespace StudentManagement.UI.API.Controllers
             var validationResult = await validator.ValidateAsync(studentDto);
 
             if (!validationResult.IsValid)
+            {
+                logger.LogWarning("Date and Time {@DateTime} - Validation failed: {@ValidationErrors}", 
+                                    validationResult.Errors, 
+                                    DateTime.Now);
                 return BadRequest(validationResult.Errors);
+            }
 
             var student = studentDto.ToStudent();
             unitOfWork.Students.Add(student);
