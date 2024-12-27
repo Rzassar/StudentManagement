@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using StudentManagement.Core.Application;
 using StudentManagement.Core.Application.Contracts.IRepository;
 using StudentManagement.Infrastructure;
@@ -8,9 +9,15 @@ namespace StudentManagement.UI.API
 {
     public class Program
     {
-        public static void Main(string[] args) 
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("./logs/log-.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            builder.Host.UseSerilog();
 
             //NOTE: Add services to the container.
             builder.Services.AddControllers();

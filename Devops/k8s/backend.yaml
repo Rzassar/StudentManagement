@@ -1,3 +1,27 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: logs-pv
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /c/k8s/logs  # This will map to C:\k8s\logs on Windows
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: logs-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,6 +39,13 @@ spec:
       containers:
         - name: backend
           image: reza1130/student-management-api:latest
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
           ports:
             - containerPort: 80
           env:
@@ -22,6 +53,13 @@ spec:
               value: "http://+"
             - name: ConnectionStrings__DefaultConnection
               value: "Server=mssql-service;Database=StudentManagementDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True"
+          volumeMounts:
+            - name: logs-volume
+              mountPath: /app/logs
+      volumes:
+        - name: logs-volume
+          persistentVolumeClaim:
+            claimName: logs-pvc
 ---
 apiVersion: v1
 kind: Service

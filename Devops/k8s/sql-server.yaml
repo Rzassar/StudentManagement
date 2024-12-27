@@ -3,12 +3,12 @@ kind: PersistentVolumeClaim
 metadata:
   name: mssql-data
 spec:
-  storageClassName: hostpath
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 500Mi
+  storageClassName: hostpath
 ---
 apiVersion: apps/v1
 kind: Deployment
